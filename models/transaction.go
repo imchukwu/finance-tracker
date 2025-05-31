@@ -1,9 +1,10 @@
 package models
 
 import (
-	"errors"
 	"fmt"
 	"time"
+
+	"github.com/imchukwu/finance-tracker/errors"
 )
 
 type Transaction struct {
@@ -42,16 +43,16 @@ func (t *Transaction) Display() string {
 
 func (t *Transaction) Validate() error {
     if t.ID == "" {
-        return errors.New("transaction ID cannot be empty")
+        return &errors.ValidationError{Field: "ID", Msg: "cannot be empty"}
     }
     if t.Amount <= 0 {
-        return errors.New("amount must be positive")
+        return &errors.ValidationError{Field: "Amount", Msg: "must be positive"}
     }
     if t.Category == "" {
-        return errors.New("category cannot be empty")
+        return &errors.ValidationError{Field: "Category", Msg: "cannot be empty"}
     }
     if t.Type != "income" && t.Type != "expense" {
-        return errors.New("type must be either 'income' or 'expense'")
+        return &errors.ValidationError{Field: "Type", Msg: "must be 'income' or 'expense'"}
     }
     return nil
 }
